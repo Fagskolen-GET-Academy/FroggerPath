@@ -2,18 +2,19 @@ function updateView() {
   const boardEl = document.getElementById("board");
   boardEl.style.gridTemplateColumns = `repeat(${colCount}, 40px)`;
 
-  boardEl.innerHTML = map
-    .map((cellValue, index) => {
-      const cls = getCellClass(cellValue);
-      const isFrog = index === frogIndex;
-      const isPath = showPath && path.includes(index);
-      return `
-          <div class="cell ${cls} ${isFrog ? "frog" : ""} ${isPath ? "pathHint" : ""}">
-            ${getCellIcon(cellValue, isFrog)}
-          </div>
-        `;
-    })
-    .join("");
+  let html = "";
+  for (let index = 0; index < map.length; index++) {
+    const v = map[index];
+    const isFrog = index === frogIndex;
+    const isPath = showPath && path.includes(index);
+
+    html += `
+      <div class="cell ${getCellClass(v)} ${isFrog ? "frog" : ""} ${isPath ? "pathHint" : ""}">
+         ${getCellIcon(v, isFrog)}
+      </div>
+    `;
+  }
+  boardEl.innerHTML = html;
 
   document.getElementById("meta").innerHTML = `
         <div><b>Frog index:</b> <code>${frogIndex}</code></div>
